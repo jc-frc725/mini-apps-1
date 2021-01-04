@@ -54,25 +54,28 @@ document.addEventListener('DOMContentLoaded', event => {
 // Controller
 
 // click handler should update the boardModel with appropriate piece
-// which is then reflected on DOM
-let addXorO = (cell) => {
+let addXorO = (cell, row, col) => {
+  // get model's cell
+  boardModel._rows[row][col];
+  // place X or O into boardModel cell
   if (boardModel.placeX) {
-    cell.innerHTML = "&nbsp &nbsp X &nbsp &nbsp";
+    boardModel._rows[row][col] = "&nbsp &nbsp X &nbsp &nbsp";
   } else {
-    cell.innerHTML = "&nbsp &nbsp O &nbsp &nbsp";
+    boardModel._rows[row][col] = "&nbsp &nbsp O &nbsp &nbsp";
   }
   // switch to X or O after placing
   boardModel.placeX = !boardModel.placeX;
+
+  // update DOM to reflect boardModel
+  cell.innerHTML = boardModel._rows[row][col];
 }
 
 // add event listeners to each cell
-
-
 for (let i = 0; i < DOMrows.length; i++) {
   for (let j = 0; j < DOMrows[i].children.length; j++) {
     let cell = DOMrows[i].children[j];
     cell.addEventListener('click', event => {
-      addXorO(cell);
+      addXorO(cell, i, j);
     });
   }
 }
