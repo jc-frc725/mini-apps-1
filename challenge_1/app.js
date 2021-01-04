@@ -51,7 +51,12 @@ document.addEventListener('DOMContentLoaded', event => {
 // add event listeners to each cell
 for (let i = 0; i < cells.length; i++) {
   cells[i].addEventListener('click', event => {
-    cells[i].innerHTML = "&nbsp &nbsp X &nbsp &nbsp";
+    if (boardModel.placeX) {
+      cells[i].innerHTML = "&nbsp &nbsp X &nbsp &nbsp";
+    } else {
+      cells[i].innerHTML = "&nbsp &nbsp O &nbsp &nbsp";
+    }
+    boardModel.placeX = !boardModel.placeX;
   });
 }
 
