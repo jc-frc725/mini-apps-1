@@ -15,6 +15,6 @@ console.log(rows);
 // add event listeners to each cell
 for (let i = 0; i < cells.length; i++) {
   cells[i].addEventListener('click', event => {
-    console.log('event listner test');
-  })
+    cells[i].textContent = '     X     ';
+  });
 }
