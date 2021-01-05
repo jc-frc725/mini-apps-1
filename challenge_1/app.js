@@ -34,10 +34,10 @@ document.addEventListener('DOMContentLoaded', event => {
   for (let i = 0; i < boardModel._rows.length; i++) {
     for (let j = 0; j < boardModel._rows[i].length; j++) {
       // let blank = "&nbsp &nbsp &nbsp &nbsp &nbsp"
-      boardModel._rows[i][j] = "&nbsp &nbsp &nbsp &nbsp &nbsp";
+      // boardModel._rows[i][j] = "&nbsp &nbsp &nbsp &nbsp &nbsp";
       // render boardModel's data into DOM in a pleasant way
       // fill HTML elements with blanks
-      DOMrows[i].children[j].innerHTML = boardModel._rows[i][j];
+      DOMrows[i].children[j].innerHTML = "&nbsp &nbsp &nbsp &nbsp &nbsp"
     }
   }
 
@@ -56,6 +56,11 @@ document.addEventListener('DOMContentLoaded', event => {
 let threeInARow = () => {
   // check horizontals (one row, cols 0-2 all have something)
     // starting from row 0, check each col, then go to row 1...
+  let rows = boardModel._rows;
+  for (let i = 0; i < rows.length; i++) {
+    let current = rows[i]
+  }
+
 
   // check verticals (rows 0-2, one col all have something)
     // starting from col 0, check each row, then go to col 1
@@ -77,15 +82,15 @@ let addXorO = (cell, row, col) => {
   if (!isOccupied(boardModel._rows[row][col])) {
     // place X or O into boardModel cell
     if (boardModel.placeX) {
-      boardModel._rows[row][col] = "&nbsp &nbsp X &nbsp &nbsp";
+      boardModel._rows[row][col] = "X";
     } else {
-      boardModel._rows[row][col] = "&nbsp &nbsp O &nbsp &nbsp";
+      boardModel._rows[row][col] = "O";
     }
     // switch to X or O after placing
     boardModel.placeX = !boardModel.placeX;
 
     // update DOM to reflect boardModel
-    cell.innerHTML = boardModel._rows[row][col];
+    cell.innerHTML = `&nbsp &nbsp ${boardModel._rows[row][col]} &nbsp &nbsp`
   }
 
   // check for win condition
