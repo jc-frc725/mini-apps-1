@@ -1,7 +1,7 @@
 
 // access all DOM board cells directly
 // array-like format
-var cells = document.getElementsByTagName('td');
+//var cells = document.getElementsByTagName('td');
 
 // access the entire DOM board
 const board = document.querySelector('table');
@@ -14,7 +14,6 @@ const DOMrows = board.rows;
 const boardModel = {
   _rows: [[], [], []],
   placeX: true
-  // threeInRow: 'something',
   // checkForWin: function(rows) {
   //   'checks for a win'
   // }
@@ -52,8 +51,19 @@ document.addEventListener('DOMContentLoaded', event => {
 
 
 // Controller
-
 // can only put X/O on empty spaces
+
+let threeInARow = () => {
+  // check horizontals (one row, cols 0-2 all have something)
+    // starting from row 0, check each col, then go to row 1...
+
+  // check verticals (rows 0-2, one col all have something)
+    // starting from col 0, check each row, then go to col 1
+
+  // check diagonals (0,0, 1,1, 2,2 || 0,2, 1,1, 2,0 )
+    // specific
+}
+
 let isOccupied = (cell) => {
   return cell.includes('X') || cell.includes('O');
 }
@@ -78,6 +88,7 @@ let addXorO = (cell, row, col) => {
     cell.innerHTML = boardModel._rows[row][col];
   }
 
+  // check for win condition
 }
 
 // add event listeners to each cell
