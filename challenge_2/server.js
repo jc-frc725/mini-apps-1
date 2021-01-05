@@ -2,19 +2,21 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const url = '/csv_generator';
 
 app.use(express.static('client'));
+app.use(express.json());
+
 app.use('/', (req, res, next) => {
   console.log(`Incoming ${req.method} from ${req.path}`);
   next();
 });
 
-
-app.get('/', (req, res) => {
+app.get(url, (req, res) => {
   res.send('Testing mini app 2 server.');
 });
 
-app.post('/', (req, res) => {
+app.post(url, (req, res) => {
   res.send(`${req.body} received. POST Request`);
 });
 

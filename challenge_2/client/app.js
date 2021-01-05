@@ -7,7 +7,7 @@ console.log('Hello world');
 var userData = document.getElementById('data');
 const button = document.querySelector('input');
 
-button.addEventListener('click', event => {
+button.addEventListener('submit', event => {
   console.log(userData.value);
   event.preventDefault();
 })
