@@ -4,11 +4,11 @@
 //var cells = document.getElementsByTagName('td');
 
 // access the entire DOM board
-const board = document.querySelector('table');
+// const board = document.querySelector('table');
 // HTMLTableElement methods apply to tables only
 
 // access DOM board rows
-const DOMrows = board.rows;
+const DOMrows = document.querySelector('table').rows;
 
 // Model - board's internal state for rows and cells, win checking
 const boardModel = {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', event => {
       // boardModel._rows[i][j] = "&nbsp &nbsp &nbsp &nbsp &nbsp";
       // render boardModel's data into DOM in a pleasant way
       // fill HTML elements with blanks
-      DOMrows[i].children[j].innerHTML = "&nbsp &nbsp &nbsp &nbsp &nbsp"
+      DOMrows[i].children[j].innerHTML = "&nbsp &nbsp &nbsp &nbsp &nbsp";
     }
   }
 
@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded', event => {
 // Controller
 let check3InARow = (row) => {
   if (row === 'XXX') {
-    boardModel.winner = 'X'
+    boardModel.winner = 'X';
   } else if (row === 'OOO') {
-    boardModel.winner = 'O'
+    boardModel.winner = 'O';
   }
 }
 
@@ -63,7 +63,7 @@ let checkHorizontals = () => {
 
 let checkVerticals = () => {
   for (let i = 0; i < 3; i++) {
-    let vertical = ''
+    let vertical = '';
     for (let j = 0; j < 3; j++) {
       vertical += boardModel._rows[j][i];
     }
@@ -89,10 +89,11 @@ let checkForWin = () => {
   checkDiagonals();
 }
 
-let showWinner = () => {
+let displayWinner = () => {
   if (boardModel.winner) {
     // later, this would add another HTML element to DOM
-    console.log(`${boardModel.winner} has won!`);
+    let body = document.querySelector('body');
+    body.append(`${boardModel.winner} has won!`);
   }
 }
 
@@ -102,6 +103,10 @@ let isOccupied = (cell) => {
 
 // click handler should update the boardModel with appropriate piece, then update DOM
 let addXorO = (cell, row, col) => {
+  // if game has been won, do not do allow additional input
+  if (boardModel.winner) {
+    return;
+  }
   // check if this cell is currently occupied
   if (!isOccupied(boardModel._rows[row][col])) {
     // place X or O into boardModel cell
@@ -112,14 +117,13 @@ let addXorO = (cell, row, col) => {
     }
     // switch to X or O after placing
     boardModel.placeX = !boardModel.placeX;
-
     // update DOM to reflect boardModel
-    cell.innerHTML = `&nbsp &nbsp ${boardModel._rows[row][col]} &nbsp &nbsp`
+    cell.innerHTML = `&nbsp &nbsp ${boardModel._rows[row][col]} &nbsp &nbsp`;
   }
 
   // check for win condition
   checkForWin();
-  showWinner();
+  displayWinner();
 }
 
 // add event listeners to each cell
