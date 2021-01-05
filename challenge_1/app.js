@@ -41,32 +41,15 @@ document.addEventListener('DOMContentLoaded', event => {
 
 });
 
-
 // View
 // render boardModel's data into DOM in a pleasant way
 // fill string data into <html> elements
 
 // Controller
-
-// find any 3 in a row
-let checkForWin = () => {
-  // check horizontals (one row, cols 0-2)
-  checkHorizontals();
-  // check verticals (rows 0-2, one col)
-  checkVerticals();
-
-  // check diagonals (0,0, 1,1, 2,2 || 0,2, 1,1, 2,0 )
-  // if (boardModel.winner) {
-  //   console.log(`${winner} has won!`);
-  // }
-}
-
 let check3InARow = (row) => {
   if (row === 'XXX') {
-    // console.log('X win')
     boardModel.winner = 'X'
   } else if (row === 'OOO') {
-    // console.log('O win')
     boardModel.winner = 'O'
   }
 }
@@ -87,10 +70,28 @@ let checkVerticals = () => {
     check3InARow(vertical);
   }
 }
-let checkDiagonals
+
+let checkDiagonals = () => {
+  let leftDiagonal = boardModel._rows[0][0]
+    + boardModel._rows[1][1]
+    + boardModel._rows[2][2];
+  check3InARow(leftDiagonal);
+  let rightDiagonal = boardModel._rows[0][2]
+    + boardModel._rows[1][1]
+    + boardModel._rows[2][0];
+  check3InARow(rightDiagonal);
+}
+
+// find any 3 in a row
+let checkForWin = () => {
+  checkHorizontals();
+  checkVerticals();
+  checkDiagonals();
+}
 
 let showWinner = () => {
   if (boardModel.winner) {
+    // later, this would add another HTML element to DOM
     console.log(`${boardModel.winner} has won!`);
   }
 }
