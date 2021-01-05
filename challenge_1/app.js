@@ -46,19 +46,14 @@ document.addEventListener('DOMContentLoaded', event => {
 // render boardModel's data into DOM in a pleasant way
 // fill string data into <html> elements
 
-
-
 // Controller
-// can only put X/O on empty spaces
 
 // find any 3 in a row
-let check3InARow = () => {
+let checkForWin = () => {
   // check horizontals (one row, cols 0-2)
   checkHorizontals();
-
   // check verticals (rows 0-2, one col)
   checkVerticals();
-    // starting from col 0, check each row, then go to col 1
 
   // check diagonals (0,0, 1,1, 2,2 || 0,2, 1,1, 2,0 )
   // if (boardModel.winner) {
@@ -66,16 +61,20 @@ let check3InARow = () => {
   // }
 }
 
+let check3InARow = (row) => {
+  if (row === 'XXX') {
+    // console.log('X win')
+    boardModel.winner = 'X'
+  } else if (row === 'OOO') {
+    // console.log('O win')
+    boardModel.winner = 'O'
+  }
+}
+
 let checkHorizontals = () => {
   boardModel._rows.forEach(row => {
     let horizontal = row.join('');
-    if (horizontal === 'XXX') {
-      // console.log('X win')
-      boardModel.winner = 'X'
-    } else if (horizontal === 'OOO') {
-      // console.log('O win')
-      boardModel.winner = 'O'
-    }
+    check3InARow(horizontal);
   });
 }
 
@@ -85,11 +84,7 @@ let checkVerticals = () => {
     for (let j = 0; j < 3; j++) {
       vertical += boardModel._rows[j][i];
     }
-    if (vertical === 'XXX') {
-      boardModel.winner = 'X';
-    } else if (vertical === 'OOO') {
-      boardModel.winner = 'O';
-    }
+    check3InARow(vertical);
   }
 }
 let checkDiagonals
@@ -122,7 +117,7 @@ let addXorO = (cell, row, col) => {
   }
 
   // check for win condition
-  check3InARow();
+  checkForWin();
   showWinner();
 }
 
