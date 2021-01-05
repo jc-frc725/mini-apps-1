@@ -1,24 +1,13 @@
-
-// access all DOM board cells directly
-// array-like format
-//var cells = document.getElementsByTagName('td');
-
-// access the entire DOM board
-// const board = document.querySelector('table');
-// HTMLTableElement methods apply to tables only
-
-// access DOM board rows
 const DOMrows = document.querySelector('table').rows;
 
-// Model - board's internal state for rows and cells, win checking
+// Model
 const boardModel = {
   _rows: [[], [], []],
-  placeX: true,
+  placeX: null,
   winner: ''
 }
-// initialize board?
-document.addEventListener('DOMContentLoaded', event => {
-  // verbose set up for boardModel's rows and cells
+
+const initialize = () => {
   boardModel._rows.forEach(row => {
     row[0] = '';
     row[1] = '';
@@ -27,23 +16,31 @@ document.addEventListener('DOMContentLoaded', event => {
 
   // first move always starts on player X
   boardModel.placeX = true;
+  boardModel.winner = '';
 
-  // initialize boardModel rows, contains no X or O, blank
+  // View
+  // render DOM
   for (let i = 0; i < boardModel._rows.length; i++) {
     for (let j = 0; j < boardModel._rows[i].length; j++) {
-      // let blank = "&nbsp &nbsp &nbsp &nbsp &nbsp"
-      // boardModel._rows[i][j] = "&nbsp &nbsp &nbsp &nbsp &nbsp";
-      // render boardModel's data into DOM in a pleasant way
-      // fill HTML elements with blanks
       DOMrows[i].children[j].innerHTML = "&nbsp &nbsp &nbsp &nbsp &nbsp";
     }
   }
 
-});
+  // add event listeners to each cell
+  for (let i = 0; i < DOMrows.length; i++) {
+    for (let j = 0; j < DOMrows[i].children.length; j++) {
+      let cell = DOMrows[i].children[j];
+      cell.addEventListener('click', event => {
+        addXorO(cell, i, j);
+      });
+    }
+  }
+}
 
-// View
-// render boardModel's data into DOM in a pleasant way
-// fill string data into <html> elements
+
+document.addEventListener('DOMContentLoaded', event => {
+  initialize();
+});
 
 // Controller
 let check3InARow = (row) => {
@@ -82,7 +79,7 @@ let checkDiagonals = () => {
   check3InARow(rightDiagonal);
 }
 
-// find any 3 in a row
+// check for any 3 in a row
 let checkForWin = () => {
   checkHorizontals();
   checkVerticals();
@@ -91,9 +88,8 @@ let checkForWin = () => {
 
 let displayWinner = () => {
   if (boardModel.winner) {
-    // later, this would add another HTML element to DOM
-    let body = document.querySelector('body');
-    body.append(`${boardModel.winner} has won!`);
+    let message = document.getElementById('win-message');
+    message.append(`${boardModel.winner} has won!`);
   }
 }
 
@@ -101,38 +97,29 @@ let isOccupied = (cell) => {
   return cell.includes('X') || cell.includes('O');
 }
 
-// click handler should update the boardModel with appropriate piece, then update DOM
 let addXorO = (cell, row, col) => {
   // if game has been won, do not do allow additional input
   if (boardModel.winner) {
     return;
   }
-  // check if this cell is currently occupied
+
   if (!isOccupied(boardModel._rows[row][col])) {
-    // place X or O into boardModel cell
     if (boardModel.placeX) {
       boardModel._rows[row][col] = "X";
     } else {
       boardModel._rows[row][col] = "O";
     }
-    // switch to X or O after placing
     boardModel.placeX = !boardModel.placeX;
-    // update DOM to reflect boardModel
     cell.innerHTML = `&nbsp &nbsp ${boardModel._rows[row][col]} &nbsp &nbsp`;
   }
 
-  // check for win condition
   checkForWin();
   displayWinner();
 }
 
-// add event listeners to each cell
-for (let i = 0; i < DOMrows.length; i++) {
-  for (let j = 0; j < DOMrows[i].children.length; j++) {
-    let cell = DOMrows[i].children[j];
-    cell.addEventListener('click', event => {
-      addXorO(cell, i, j);
-    });
-  }
-}
+// button to reset entire game state
+document.querySelector('button').addEventListener('click', event => {
+  document.getElementById('win-message').textContent = '';
+  initialize();
+});
 
