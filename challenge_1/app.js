@@ -53,21 +53,31 @@ document.addEventListener('DOMContentLoaded', event => {
 
 // Controller
 
-// click handler should update the boardModel with appropriate piece
+// can only put X/O on empty spaces
+let isOccupied = (cell) => {
+  return cell.includes('X') || cell.includes('O');
+}
+
+// click handler should update the boardModel with appropriate piece, then update DOM
 let addXorO = (cell, row, col) => {
   // get model's cell
-  boardModel._rows[row][col];
-  // place X or O into boardModel cell
-  if (boardModel.placeX) {
-    boardModel._rows[row][col] = "&nbsp &nbsp X &nbsp &nbsp";
-  } else {
-    boardModel._rows[row][col] = "&nbsp &nbsp O &nbsp &nbsp";
-  }
-  // switch to X or O after placing
-  boardModel.placeX = !boardModel.placeX;
+  // boardModel._rows[row][col];
 
-  // update DOM to reflect boardModel
-  cell.innerHTML = boardModel._rows[row][col];
+  // check if this cell is currently occupied
+  if (!isOccupied(boardModel._rows[row][col])) {
+    // place X or O into boardModel cell
+    if (boardModel.placeX) {
+      boardModel._rows[row][col] = "&nbsp &nbsp X &nbsp &nbsp";
+    } else {
+      boardModel._rows[row][col] = "&nbsp &nbsp O &nbsp &nbsp";
+    }
+    // switch to X or O after placing
+    boardModel.placeX = !boardModel.placeX;
+
+    // update DOM to reflect boardModel
+    cell.innerHTML = boardModel._rows[row][col];
+  }
+
 }
 
 // add event listeners to each cell
