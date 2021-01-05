@@ -15,9 +15,6 @@ const boardModel = {
   _rows: [[], [], []],
   placeX: true,
   winner: ''
-  // checkForWin: function(rows) {
-  //   'checks for a win'
-  // }
 }
 // initialize board?
 document.addEventListener('DOMContentLoaded', event => {
@@ -60,6 +57,7 @@ let check3InARow = () => {
   checkHorizontals();
 
   // check verticals (rows 0-2, one col)
+  checkVerticals();
     // starting from col 0, check each row, then go to col 1
 
   // check diagonals (0,0, 1,1, 2,2 || 0,2, 1,1, 2,0 )
@@ -69,20 +67,31 @@ let check3InARow = () => {
 }
 
 let checkHorizontals = () => {
-  boardModel._rows.forEach(horizontal => {
-    //
-    let string = horizontal.join('');
-    if (string === 'XXX') {
+  boardModel._rows.forEach(row => {
+    let horizontal = row.join('');
+    if (horizontal === 'XXX') {
       // console.log('X win')
       boardModel.winner = 'X'
-    } else if (string === 'OOO') {
+    } else if (horizontal === 'OOO') {
       // console.log('O win')
       boardModel.winner = 'O'
     }
   });
 }
 
-let checkVerticals
+let checkVerticals = () => {
+  for (let i = 0; i < 3; i++) {
+    let vertical = ''
+    for (let j = 0; j < 3; j++) {
+      vertical += boardModel._rows[j][i];
+    }
+    if (vertical === 'XXX') {
+      boardModel.winner = 'X';
+    } else if (vertical === 'OOO') {
+      boardModel.winner = 'O';
+    }
+  }
+}
 let checkDiagonals
 
 let showWinner = () => {
@@ -97,9 +106,6 @@ let isOccupied = (cell) => {
 
 // click handler should update the boardModel with appropriate piece, then update DOM
 let addXorO = (cell, row, col) => {
-  // get model's cell
-  // boardModel._rows[row][col];
-
   // check if this cell is currently occupied
   if (!isOccupied(boardModel._rows[row][col])) {
     // place X or O into boardModel cell
@@ -117,7 +123,7 @@ let addXorO = (cell, row, col) => {
 
   // check for win condition
   check3InARow();
-  showWinner()
+  showWinner();
 }
 
 // add event listeners to each cell
