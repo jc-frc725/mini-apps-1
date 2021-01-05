@@ -13,7 +13,8 @@ const DOMrows = board.rows;
 // Model - board's internal state for rows and cells, win checking
 const boardModel = {
   _rows: [[], [], []],
-  placeX: true
+  placeX: true,
+  winner: ''
   // checkForWin: function(rows) {
   //   'checks for a win'
   // }
@@ -53,20 +54,41 @@ document.addEventListener('DOMContentLoaded', event => {
 // Controller
 // can only put X/O on empty spaces
 
-let threeInARow = () => {
-  // check horizontals (one row, cols 0-2 all have something)
-    // starting from row 0, check each col, then go to row 1...
-  let rows = boardModel._rows;
-  for (let i = 0; i < rows.length; i++) {
-    let current = rows[i]
-  }
+// find any 3 in a row
+let check3InARow = () => {
+  // check horizontals (one row, cols 0-2)
+  checkHorizontals();
 
-
-  // check verticals (rows 0-2, one col all have something)
+  // check verticals (rows 0-2, one col)
     // starting from col 0, check each row, then go to col 1
 
   // check diagonals (0,0, 1,1, 2,2 || 0,2, 1,1, 2,0 )
-    // specific
+  // if (boardModel.winner) {
+  //   console.log(`${winner} has won!`);
+  // }
+}
+
+let checkHorizontals = () => {
+  boardModel._rows.forEach(horizontal => {
+    //
+    let string = horizontal.join('');
+    if (string === 'XXX') {
+      // console.log('X win')
+      boardModel.winner = 'X'
+    } else if (string === 'OOO') {
+      // console.log('O win')
+      boardModel.winner = 'O'
+    }
+  });
+}
+
+let checkVerticals
+let checkDiagonals
+
+let showWinner = () => {
+  if (boardModel.winner) {
+    console.log(`${boardModel.winner} has won!`);
+  }
 }
 
 let isOccupied = (cell) => {
@@ -94,6 +116,8 @@ let addXorO = (cell, row, col) => {
   }
 
   // check for win condition
+  check3InARow();
+  showWinner()
 }
 
 // add event listeners to each cell
