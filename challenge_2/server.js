@@ -33,6 +33,10 @@ app.post(url, (req, res) => {
     for (key in obj) {
       if (key !== 'children') {
         line.push(obj[key]);
+        if (typeof obj[key] === 'number') {
+          result += line.join(',');
+          result += '\n';
+        }
       } else {
         let children = obj[key]
         for (let i = 0; i < children.length; i++) {
@@ -40,8 +44,6 @@ app.post(url, (req, res) => {
         }
       }
     }
-    result += line.join(',');
-    result += '\n';
   }
   jsonToCSV(parsedJSON);
 
