@@ -78,7 +78,9 @@ const readJSON = (filepath, callback) => {
 
 app.post(url, (req, res) => {
   // convert req.body to csv format, then send it back
-  var filepath = path.resolve(__dirname, 'samples', req.body.jsonData);
+  //console.log(req.body);
+  var file = Object.keys(req.body).join().substring(12);
+  var filepath = path.resolve(__dirname, 'samples', file);
 
   readJSON(filepath, (err, rawJSON) => {
     if (err) {
