@@ -10,12 +10,14 @@ class App extends React.Component {
     this.state = {}
   }
 
-  handleClick(event) {
+  handleClickCheckout(event) {
     fetch('/f1', {
       method: 'GET'
     }).then(response => {
       console.log(response);
-    })
+      // if the response is successful, render F1 to DOM?
+      ReactDOM.render(<F1 />, document.getElementById('app'))
+    });
   }
 
   render() {
