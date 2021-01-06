@@ -10,6 +10,13 @@ app.use((req, res, next) => {
   next();
 })
 
+// checkout request handler
+app.get('/f1', (req, res) => {
+  console.log(req.path)
+  res.send('received')
+})
+
+
 app.listen(port, ()=> {
   console.log(`Express listening at port ${port}!`);
 })
