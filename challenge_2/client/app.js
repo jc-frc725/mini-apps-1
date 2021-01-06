@@ -8,6 +8,6 @@ var userData = document.getElementById('data');
 const button = document.querySelector('input');
 
 button.addEventListener('submit', event => {
+  // send userData.value to api
   console.log(userData.value);
-  event.preventDefault();
 })

@@ -6,6 +6,7 @@ const url = '/csv_generator';
 
 app.use(express.static('client'));
 app.use(express.json());
+app.use(express.urlencoded());
 
 app.use('/', (req, res, next) => {
   console.log(`Incoming ${req.method} from ${req.path}`);
@@ -17,7 +18,60 @@ app.get(url, (req, res) => {
 });
 
 app.post(url, (req, res) => {
-  res.send(`${req.body} received. POST Request`);
+  // convert req.body to csv format, then send it back
+  var rawJSON = req.body.jsonData;
+  var parsedJSON = JSON.parse(rawJSON);
+
+  // all initial keys except "children" are columns for csv
+  var result = [];
+  let columnHeaders = Object.keys(parsedJSON);
+  columnHeaders.pop();
+  result = columnHeaders.join(',') + '\n';
+
+  function jsonToCSV(obj) {
+    let line = [];
+    for (key in obj) {
+      if (key !== 'children') {
+        line.push(obj[key]);
+      } else {
+        let children = obj[key]
+        for (let i = 0; i < children.length; i++) {
+          jsonToCSV(children[i]);
+        }
+      }
+    }
+    result += line.join(',');
+    result += '\n';
+  }
+  jsonToCSV(parsedJSON);
+
+  // send back html template of page, but with csv also attached
+  // this is very gross but works for now?
+  function template(responseData) {
+    return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Challenge 2: CSV Report Generator</title>
+        <link rel="stylesheet" href="styles.css">
+      </head>
+      <body>
+        <h1>CSV Report Generator</h1>
+        <form method="POST" action="/csv_generator">
+          <textarea id="data" name="jsonData"></textarea>
+          <input type="submit" value="Submit">
+        </form>
+        <div classname="server-response">
+          ${responseData}
+        <div>
+      </body>
+      <script src="app.js"></script>
+    </html>
+    `
+  }
+
+  res.send(template(result));
 });
 
 // Client should be able to submit JSON data to server, receive response of CSV-format
