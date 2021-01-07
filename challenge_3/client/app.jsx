@@ -32,7 +32,7 @@ class App extends React.Component {
           <button onClick={this.handleClickCheckout}>Checkout</button>
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -51,7 +51,18 @@ class F1 extends React.Component {
     let email = document.getElementById('email').value;
     let password = document.getElementById('password').value;
     let data = { name, email, password };
-    console.log(data);
+    //console.log(data);
+
+    fetch('/f2', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {'Content-Type': 'application/json'},
+    }).then(response => {
+      console.log(response);
+      // successful response, render F2
+      ReactDOM.render(<F2 />, document.getElementById('app'));
+    });
+
     event.preventDefault();
   }
 
@@ -70,7 +81,7 @@ class F1 extends React.Component {
             <input id="email" type="text"></input>
           <label>Password: </label>
             <input id="password" type="text"></input>
-          <button onClick={this.handleF1Next} value="Next"></button>
+          <button onClick={this.handleF1Next}>Next</button>
         </form>
       </div>
     )
@@ -78,6 +89,19 @@ class F1 extends React.Component {
 }
 
 // F2 - collect address {line1, line2, city, state, zip} + phone
+class F2 extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div>
+        F2
+      </div>
+    )
+  }
+}
 // F3 - credit card #, expiry date, CVV, billing zip
 // Confirmation. Summarize all previous data. When "purchase" completes, return to Homepage
 

@@ -4,6 +4,7 @@ const app = express();
 const port = 3000;
 
 app.use(express.static('public'));
+app.use(express.json());
 
 app.use((req, res, next) => {
   console.log(`Incoming ${req.method} request from url ${req.url}`);
@@ -18,7 +19,8 @@ app.get('/f1', (req, res) => {
 
 // f1 next button request handler
 app.post('/f2', (req, res) => {
-  console.log(req.path);
+  // {name, email, password} found in req.body
+  console.log(`receiving ${JSON.stringify(req.body)}`);
   res.send('f1 form complete, f2 form next');
 });
 
