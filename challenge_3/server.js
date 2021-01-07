@@ -20,10 +20,18 @@ app.get('/f1', (req, res) => {
 // f1 next button request handler
 app.post('/f2', (req, res) => {
   // {name, email, password} found in req.body
+  // pass to eventual db query?
   console.log(`receiving ${JSON.stringify(req.body)}`);
   res.send('f1 form complete, f2 form next');
 });
 
+// f2 next button request handler
+app.post('/f3', (req, res) => {
+  // JSON data in req.body
+  // pass to eventual db query?
+  console.log(`receiving ${JSON.stringify(req.body)}`);
+  res.send('f2 form complete, f3 form next');
+});
 
 app.listen(port, ()=> {
   console.log(`Express listening at port ${port}!`);
