@@ -8,9 +8,12 @@ class Square extends React.Component {
   }
 
   render() {
+    const style = {
+      border: 'solid black 2px'
+    }
     return (
-      <div className="square">
-        I am a Square. These are my coordinates: {`${this.props.x}, ${this.props.y}`}
+      <div className="square" style={style}>
+        {`I am a Square. These are my coordinates: ${this.props.x}, ${this.props.y}`}
       </div>
     )
   }
